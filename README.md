@@ -1,2 +1,3 @@
 # revm
-Barebones Rust EVM Implementation
+
+**Barebones** Rust EVM Implementation
