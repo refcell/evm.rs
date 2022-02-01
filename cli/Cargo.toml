@@ -1,0 +1,9 @@
+[package]
+name = "cli"
+version = "0.1.0"
+edition = "2021"
+author = "andreas <andreas@nascent.xyz"
+description = "Interacts with the revm"
+
+[dependencies]
+clap = { version = "3.0.13", features = ["derive"] }
