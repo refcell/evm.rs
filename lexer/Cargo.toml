@@ -1,0 +1,8 @@
+[package]
+name = "lexer"
+version = "0.1.0"
+edition = "2021"
+author = "andreas <andreas@nascent.xyz"
+description = "Tokenizes the hexadecimal compiled output from solc"
+
+[dependencies]
