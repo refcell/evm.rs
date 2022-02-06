@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 lexer = { path="../lexer" }
+bigint = "4.4.3"
