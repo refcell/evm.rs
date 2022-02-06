@@ -1,6 +1,8 @@
 [workspace]
 members = [
     "lexer",
+    "evm",
+    "cli"
 ]
 
 # Binary size optimizations

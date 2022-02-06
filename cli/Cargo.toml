@@ -6,4 +6,5 @@ author = "andreas <andreas@nascent.xyz"
 description = "Interacts with the revm"
 
 [dependencies]
-clap = { version = "3.0.13", features = ["derive"] }
+# clap = { version = "3.0.13", features = ["derive"] }
+evm = { path="../evm" }

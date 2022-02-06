@@ -1,16 +1,22 @@
-//! Primary Vm Implementation
+/// Primary Vm Implementation
+
+use std::fs::File;
+use std::io::prelude::*;
+use std::error::Error;
 
 use crate::opcodes::Opcode;
 
-//! The VM
-struct Vm {
+use lexer::decode::*;
+
+/// The VM
+pub struct Vm {
     code: Vec<u8>, // smart contract code
     pc: usize, // current instruction
 }
 
-//! Implement the VM
+/// Implement the VM
 impl Vm {
-    pub fn new_from_file(filename: &str) -> Result<Vm, Box<Error>> {
+    pub fn new_from_file(filename: &str) -> Result<Vm, Box<dyn Error>> {
         let mut f = File::open(filename)?;
         let mut buffer = String::new();
         f.read_to_string(&mut buffer)?;
@@ -22,31 +28,35 @@ impl Vm {
     /// Execute the current opcode
     /// And increment the program counter
     pub fn next(&mut self) -> Option<Opcode> {
-        match self.code[self.pc] {
+        if self.pc >= self.code.len() {
+            return Some(Opcode::EOF);
+        }
+        let addr = self.pc;
+        match self.code[addr] {
             0x00 => {
               self.pc += 1;
-              Some(Opcode::STOP)
+              Some(Opcode::STOP(addr))
             },
             0x01 => {
               self.pc += 1;
-              Some(Opcode::ADD)
+              Some(Opcode::ADD(addr))
             },
             0x02 => {
               self.pc += 1;
-              Some(Opcode::MUL)
+              Some(Opcode::MUL(addr))
             },
             0x60 => {
               // Grab the address off the stack
               let val = self.code[self.pc + 1];
               self.pc += 1;
-              Some(Opcode::PUSH1(val))
+              Some(Opcode::PUSH1(addr, val))
             },
             0x61 => {
               // Grab the address off the stack
               let val = self.code[self.pc + 1];
               let val2 = self.code[self.pc + 2];
               self.pc += 1;
-              Some(Opcode::PUSH2(val, val2))
+              Some(Opcode::PUSH2(addr, val, val2))
             },
             _ => {
               self.pc += 1;

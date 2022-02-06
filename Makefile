@@ -2,7 +2,7 @@
 # (-include to ignore error if it does not exist)
 -include .env
 
-all: solc compile
+all: cargo-clean solc compile workspace
 
 # Install proper solc version.
 solc:; nix-env -f https://github.com/dapphub/dapptools/archive/master.tar.gz -iA solc-static-versions.solc_0_8_11
@@ -10,5 +10,8 @@ solc:; nix-env -f https://github.com/dapphub/dapptools/archive/master.tar.gz -iA
 # Compile the Sample Smart Contract
 compile  :; solc --bin-runtime --optimize --overwrite -o . SampleContract.sol
 
-# Build the lexer
-lexer:; cargo build --release lexer
+# Clean Cargo Builds
+cargo-clean :; cargo clean
+
+# Build the workspace
+workspace:; cargo build --release
