@@ -35,8 +35,6 @@ fn run() -> Result<(), Box<dyn Error>> {
     let function = args[1].clone();
     let filename = args[2].clone();
 
-    // let filename = "SampleContract.bin-runtime";
-
     // ** Create the Vm from file
     if let Ok(mut vm) = Vm::new_from_file(&filename) {
         match &*function {
