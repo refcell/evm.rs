@@ -34,8 +34,8 @@ impl Vm {
         if self.pc >= self.code.len() {
             return Opcode::EOF;
         }
-        let addr = self.pc;
-        match self.code[addr] {
+        let addr = self.pc.try_into().unwrap();
+        match self.code[self.pc] {
             0x00 => {
               self.pc += 1;
               Opcode::STOP(addr)
@@ -48,6 +48,11 @@ impl Vm {
               self.pc += 1;
               Opcode::MUL(addr)
             },
+            0x50 => {
+              // Pops the item off the stack
+              self.pc += 1;
+              Opcode::POP(addr)
+            }
             0x60 => {
               // Grab the address off the stack
               let val = self.code[self.pc + 1];
@@ -81,6 +86,9 @@ impl Vm {
             // Convert u8 value to U256 and push to stack
             self.stack.push(U256::from(value));
         },
+        Opcode::POP(_) => {
+          self.stack.pop();
+        }
         Opcode::ADD(addr) => {
             // How to recover nicely? There is no meaning in recovering nicely here.
             // Just burn and crash if cannot pop.
