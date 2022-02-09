@@ -66,6 +66,11 @@ impl Vm {
               self.pc += 1;
               Opcode::PUSH2(addr, val, val2)
             },
+            0x80 => {
+              // Duplicates the top item on the stack
+              self.pc += 1;
+              Opcode::DUP1(addr)
+            }
             _ => {
               self.pc += 1;
               Opcode::UNKNOWN(addr)
@@ -88,6 +93,9 @@ impl Vm {
         },
         Opcode::POP(_) => {
           self.stack.pop();
+        }
+        Opcode::DUP1(_) => {
+          self.stack.push(self.stack[0]);
         }
         Opcode::ADD(addr) => {
             // How to recover nicely? There is no meaning in recovering nicely here.
